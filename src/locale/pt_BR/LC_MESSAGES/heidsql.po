@@ -1,0 +1,17 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: André Ribeiro de Miranda <ardemiranda@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Bookmarks: 0,-1,-1,-1,-1,-1,-1,-1,-1,-1\n"
+
+msgid "Session Manager"
+msgstr "Gerenciandor de Sessão"
+
+msgid "Hostname / IP"
+msgstr "Domínio / IP"
