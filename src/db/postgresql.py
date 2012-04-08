@@ -81,15 +81,61 @@ class Schema(object):
         self._database = database
     
     def get_tables(self):
+        return self.__find_tables("table_schema = '%s'" % (self.name))
+    
+    def get_table(self, name):
+        return self.__find_tables("table_schema = '%s' AND table_name = '%s'" % (self.name, name))[0]
+        
+    def __find_tables(self, where):
         cur = self._database.get_cursor()
-        cur.execute("SELECT table_name FROM information_schema.tables WHERE table_schema = '%s'" % (self.name))
+        cur.execute("SELECT table_name, table_type " +
+                    "FROM information_schema.tables " + 
+                    "WHERE " + where)
         tables = []
         for table in cur:
-            tables.append(table[0])
+            tables.append(Table(self._database, table[0], table[1]))
         cur.close()
-        
         return tables
+
+class Table(object):
     
+    def __init__(self, database, name, type):
+        self._database = database
+        self.name = name
+        self.type = type
+        
+        
+    def get_columns(self):
+        return self.__find_columns("table_catalog = '%s' " +
+                                   "AND table_schema = '%s'", 
+                                   (self._database.name, self.name))
+
+    def get_column(self, name):
+        return self.__find_columns("table_catalog = '%s' " + 
+                                   "AND table_schema = '%s' " + 
+                                   "AND table_name",
+                                   (self._database.name, self.name, name))
+        
+    def __find_columns(self, where):
+        cur = self._database.get_cursor()
+        cur.execute("SELECT column_name " +
+                    "FROM information_schema.columns " + 
+                    "WHERE " + where)
+        
+        columns = []
+        for column in cur:
+            columns.append(Column(self._database, column[0]))
+        cur.close()
+        return columns
+
+    def get_indexes(self):
+        pass
+
+
+class Column(object):
     
-    
+    def __init__(self, database, name):
+        self._database = database
+        self.name = name
+
     

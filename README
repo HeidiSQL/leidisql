@@ -1,1 +1,4 @@
 Database front-end based on HeidiSQL (www.heidisql.com)
+
+Dependences
+psycopg2

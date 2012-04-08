@@ -1,17 +1,23 @@
 # -*- coding: utf-8 -*-
 
 
-from blinker import signal
 
 SELECTED_SERVER = "selected-server"
 SELECTED_DATABASE = "selected-database"
 SELECTED_SCHEMA = "selected-schema"
+SELECTED_TABLE = "selected-table"
 
 
-def send(event, sender=1):
-    print "send", event
-    signal(event).send(sender)
+__events = {}
+
+def send(event, *kargs):
+    try:
+        __events[event]
+    except KeyError:
+        pass
+    else:
+        return __events[event](*kargs)
+    
     
 def connect(event, callback):
-    print "connect", event, callback
-    signal(event).connect(callback)
+    __events[event] = callback

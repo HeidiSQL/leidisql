@@ -21,7 +21,7 @@ __itens.append((STOCK_DATABASE, _("Table"), 0, 0, __DOMAIN))
 
 
 STOCK_NAMESPACE = "namespace"
-__itens.append((STOCK_DATABASE, _("Namespace"), 0, 0, __DOMAIN))
+__itens.append((STOCK_NAMESPACE, _("Namespace"), 0, 0, __DOMAIN))
 
 gtk.stock_add(__itens)
 

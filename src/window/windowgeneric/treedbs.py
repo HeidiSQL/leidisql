@@ -30,7 +30,7 @@ class TreeDbs(window.general.ScrolledWindow):
         
         self._treeView.expand_row(0, False)
         
-        self._treeView.connect("cursor-changed", self._do_on_select_db)
+        self._treeView.connect("cursor-changed", self._do_on_select)
         
         #self.pack_start(self.__scrool_bar(), False, False, 0)
         
@@ -42,9 +42,8 @@ class TreeDbs(window.general.ScrolledWindow):
     def _do_store(self):
         raise NotImplementedError()
     
-    def _do_on_select_db(self, widget):
+    def _do_on_select(self, widget):
         raise NotImplementedError()
-        
 
 
 class StoreDbs(gtk.TreeStore):

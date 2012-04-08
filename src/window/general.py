@@ -3,8 +3,6 @@
 import gtk
 import hosts
 import re
-from utils import get_res_icons
-import stock
 from window import loadmodule
 
 class SessionManager(gtk.Window):
@@ -23,6 +21,7 @@ class SessionManager(gtk.Window):
         self.set_title(_("Session Manager"))
         self.set_resizable(False)
         self.set_position(gtk.WIN_POS_CENTER_ALWAYS)
+        self.set_border_width(7)
         
         self.add(self.__hbox())
 
@@ -42,18 +41,16 @@ class SessionManager(gtk.Window):
     def __listHosts(self):
         vbox = gtk.VBox(False)
         
-        hbox = gtk.HBox(False)
-        vbox.pack_start(hbox)
-        
         self.listStoreHost = gtk.ListStore(str)
         self.listHost = gtk.TreeView(self.listStoreHost)
         self.listHost.set_fixed_height_mode(gtk.TREE_VIEW_COLUMN_FIXED)
         self.listHost.set_size_request(-1, 220)
         self.listHost.connect("cursor-changed", self.on_select_host)
-        hbox.pack_start(self.listHost)
         
-        scroll = gtk.VScrollbar(self.listHost.get_vadjustment())
-        hbox.pack_start(scroll)
+        scroll = ScrolledWindow()
+        scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_ALWAYS)
+        scroll.add(self.listHost)
+        vbox.pack_start(scroll)
 
         column = gtk.TreeViewColumn(_("Session name"))
         column.set_sizing(gtk.TREE_VIEW_COLUMN_FIXED)
@@ -152,16 +149,11 @@ class SessionManager(gtk.Window):
         self._fields = {}
         vbox = gtk.VBox();
         
-        typeField = hosts.Type.FIELD_TYPE
-        vbox.add(self.__combo_box(typeField, hosts.Type.get_dbs()))
-
-        vbox.add(self.__entry(hosts.Type.FIELD_ADDRESS))
-        
-        vbox.add(self.__entry(hosts.Type.FIELD_USER))
-        
-        vbox.add(self.__entry(hosts.Type.FIELD_PASSWORD))
-        
-        vbox.add(self.__spin_button(hosts.Type.FIELD_PORT))
+        vbox.pack_start(self.__combo_box(hosts.Type.FIELD_TYPE, hosts.Type.get_dbs()))
+        vbox.pack_start(self.__entry(hosts.Type.FIELD_ADDRESS))
+        vbox.pack_start(self.__entry(hosts.Type.FIELD_USER))
+        vbox.pack_start(self.__entry(hosts.Type.FIELD_PASSWORD))
+        vbox.pack_start(self.__spin_button(hosts.Type.FIELD_PORT))
         
         return vbox
     
@@ -209,8 +201,8 @@ class SessionManager(gtk.Window):
     
     def __join_label_field(self, label, field):
         hbox = gtk.HBox()
-        hbox.add(self.__label(hosts.Type.get_label(label)))
-        hbox.add(field)
+        hbox.pack_start(self.__label(hosts.Type.get_label(label)), False, False, 5)
+        hbox.pack_start(field)
         
         self._fields[label] = field
         return hbox
